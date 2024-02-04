@@ -2,7 +2,17 @@
 
 @section('title', 'Listagem dos Empréstimos')
 
+@section('script')
+<link href="
+{{asset("./css/sweetalert.css")}}
+" rel="stylesheet">
+<script src="{{asset("./js/sweetalert.js")}}"></script>
+<script src="{{asset("./js/reserva.js")}}"></script>
+@endsection
+
 @section('content')
+
+<a href="{{ route('index') }}" class="bg-black rounded-full text-white px-8 py-2 text-xl">Menu Inicial</a>
 <h1 class="text-2xl font-semibold leading-tigh py-2">
     Listagem dos empréstimos
 </h1>
@@ -18,7 +28,7 @@
           <th
             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
           >
-            Imagem
+            Numero
           </th>
           <th
             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
@@ -43,37 +53,42 @@
           <th
             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
           >
-            Editar
+            Devolver
           </th>
         </tr>
       </thead>
       <tbody>
     @foreach ($reservations as $reservation)
-        <tr>
+        <tr >
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               
-              <img src="{{ url("storage/{$reservation->book->image}")}}" alt=" {{ $reservation->book->name }}" class="object-cover w-20">
+              {{ $reservation->book->author->number  }}.{{ $reservation->book->number  }}
                 
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $reservation->book->name  }}</td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $reservation->user_name  }}</td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              @if (Carbon\Carbon::parse(Carbon\Carbon::now()->format('F j, Y H:i:s'))->gt(Carbon\Carbon::parse($reservation->devolutionDate)))
-                Atrasado
-              @else
-                Em dia
-              @endif
+            @if (Carbon\Carbon::parse(Carbon\Carbon::now()->format('F j, Y H:i:s'))->gt(Carbon\Carbon::parse($reservation->devolutionDate)))
+            <td class="px-5 py-5 border-b border-gray-200 bg-red-300 text-sm">
+              Atrasado
 
             </td>
+                
+              @else
+              <td class="px-5 py-5 border-b border-gray-200 bg-green-300 text-sm">
+                Em dia
+  
+              </td>
+            @endif
+            
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <input type="date" value="{{ $reservation->devolutionDate  }}" readonly>
               
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <form action="{{route('reservations.edit', $reservation->id)}}" method="post" enctype="multipart/form-data"> 
+              <form id="{{$reservation->id}}" data-user_name="{{$reservation->user_name}}" class="" action="{{route('reservations.edit', $reservation->id)}}" method="post" enctype="multipart/form-data"> 
                 @csrf
                 @method('PUT')
-                <button class="bg-blue-200 rounded-full py-2 px-6">Devolver </button>
+                <button type="button" class="edit-button bg-blue-200 rounded-full py-2 px-6">Devolver </button>
                 
               </form>
               

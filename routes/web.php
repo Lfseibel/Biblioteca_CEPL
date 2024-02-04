@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,14 @@ Route::get('/books/create', [BookController::class, 'create'])->name('books.crea
 Route::post('/books', [BookController::class, 'store'])->name('books.store');
 Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
 
+Route::put('/authors/{id}', [AuthorController::class, 'update'])->name('authors.update');
+Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
+Route::get('/authors/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');
+Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
+Route::get('/authors/create', [AuthorController::class, 'create'])->name('authors.create');
+Route::post('/authors', [AuthorController::class, 'store'])->name('authors.store');
+Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
+
 Route::put('/reservations/{id}/edit', [BookController::class, 'reserveEdit'])->name('reservations.edit');
 Route::get('/reservations', [BookController::class, 'reserveIndex'])->name('reservations.index');
 Route::get('/book/{id}/reserve', [BookController::class, 'reserve'])->name('reservations.create');
@@ -39,4 +48,4 @@ Route::post('/book/{id}/reserve', [BookController::class, 'reserveStore'])->name
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');

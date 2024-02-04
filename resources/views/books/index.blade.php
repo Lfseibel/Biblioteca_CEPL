@@ -3,9 +3,11 @@
 @section('title', 'Listagem dos Livros')
 
 @section('content')
+
+<a href="{{ route('index') }}" class="bg-black rounded-full text-white px-8 py-2 text-xl">Menu Inicial</a>
 <h1 class="text-2xl font-semibold leading-tigh py-2">
     Listagem dos Livros
-    <a href="{{ route('books.create') }}" class="bg-blue-900 rounded-full text-white px-4 text-sm">+</a>
+    <a href="{{ route('books.create') }}" class="bg-blue-900 rounded-full text-white px-6 py-2 text-sm">+</a>
 </h1>
 
 <form action="{{ route('books.index') }}" method="get" class="py-5">
@@ -20,7 +22,7 @@
           <th
             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
           >
-            Imagem
+            Numero
           </th>
           <th
             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
@@ -50,19 +52,14 @@
         </tr>
       </thead>
       <tbody>
+        
     @foreach ($books as $book)
         <tr>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              @if ($book->image)
-              <img src="{{ url("storage/{$book->image}")}}" alt=" {{ $book->name }}" class="object-cover w-20">
-              @else
-              <img src="{{ url("images/default.jpg") }}" alt=" {{ $book->name }}" class="object-cover w-20">
-              @endif
-             
-                
+              {{$book->author->number}}.{{$book->number}}
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $book->name  }}</td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $book->gender  }} - {{$book->number}}</td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $book->gender  }} </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <a href="{{ route('books.show', $book->id) }}" class="bg-green-200 rounded-full py-2 px-6">Ver</a>
             </td>
@@ -70,8 +67,13 @@
                 <a href="{{ route('books.edit', $book->id) }}" class="bg-orange-200 rounded-full py-2 px-6">Editar</a>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <a href="{{ route('reservations.create', $book->id) }}" class="bg-blue-200 rounded-full py-2 px-6">Emprestar </a>
-          </td>
+              @if ($book->reservations->isNotEmpty() && $book->reservations->last()->reserved)
+                  <a href="{{ route('reservations.index', ['user_name' => $book->reservations->last()->user_name]) }}" class="bg-red-200 rounded-full py-2 px-6">Já emprestado</a>
+              @else
+                  <a href="{{ route('reservations.create', $book->id) }}" class="bg-blue-200 rounded-full py-2 px-6">Emprestar </a>
+              @endif
+              
+            </td>
         </tr>
     @endforeach
     </tbody>

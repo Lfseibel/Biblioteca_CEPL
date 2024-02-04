@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('author');
+            $table->bigInteger('author_id')->unsigned();
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade')->onUpdate('cascade');
             $table->string('gender');
-            $table->integer('number');
+            $table->string('number');
             $table->year('year');
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

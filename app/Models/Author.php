@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Author extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'number',
+    ];
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'author_id', 'id'); 
+        #relacionamento one to many, um  usuario varios comentarios
+        #(Comment::class, 'user_id', 'id'), mas como ja esta correto na tabela do comment, ele ja pega por defaul esses valores
+    }
+}

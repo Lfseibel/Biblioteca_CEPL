@@ -4,6 +4,8 @@
 
 
 @section('content')
+<a href="{{ route('books.index')}}"> Voltar </a>
+
 <h1 class="text-2xl font-semibold leading-tigh py-2">Novo livro</h1>
 
 @include('includes.validation-form')

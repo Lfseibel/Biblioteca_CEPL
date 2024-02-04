@@ -11,9 +11,8 @@ class Book extends Model
 
     protected $fillable = [
         'name',
-        'author',
+        'author_id',
         'year',
-        'image',
         'gender',
         'number',
     ];
@@ -23,5 +22,12 @@ class Book extends Model
         return $this->hasMany(Reservation::class, 'book_id', 'id'); 
         #relacionamento one to many, um  usuario varios comentarios
         #(Comment::class, 'user_id', 'id'), mas como ja esta correto na tabela do comment, ele ja pega por defaul esses valores
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Author::class, 'author_id', 'id'); 
+        #relacionamento many to one, varios comentarios um usuario
+        #(user::class, 'user_id', 'id'), mas como ja esta correto na tabela do comment, ele ja pega por defaul esses valores
     }
 }

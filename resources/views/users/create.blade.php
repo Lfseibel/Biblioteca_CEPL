@@ -4,6 +4,7 @@
 
 
 @section('content')
+<a href="{{ route('users.index')}}"> Voltar </a>
 <h1 class="text-2xl font-semibold leading-tigh py-2">Novo usuário</h1>
 
 @include('includes.validation-form')

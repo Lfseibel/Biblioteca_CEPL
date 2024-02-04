@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class AuthorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,12 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+       
 
         $rules =[
-            'name' => 'required|string|max:255|min:3|unique:users',
-            'address' => ['required', 'string','max:255', 'min:3'],
-            'contactNumber' => ['required', 'integer'],
-            'birthDate' => ['required', 'date'],
+            'name' => 'required|string|max:255|min:3',
+            'number' => ['required','unique:authors'],
+            
         ];
 
         
@@ -38,6 +38,6 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return ['name.required' => 'Nome precisa ser preenchido', 'name.min' => 'Nome precisa ter no minimo 3 caracteres', 'name.max' => 'Nome pode ter no maximo 255 caracteres', 
-        'address.required' => 'Endereço é necessário', 'contactNumber.required' => 'Número de contato é necessário', 'birthDate.required' => 'Aniversário é necessário'];
+        'number.required' => 'Número é necessário'];
     }
 }

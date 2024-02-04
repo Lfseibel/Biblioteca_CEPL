@@ -31,4 +31,9 @@ class ReservationRequest extends FormRequest
 
         return $rules;
     }
+
+    public function messages()
+    {
+        return ['user_name.required' => 'Nome precisa ser preenchido', 'devolutionDate.required' => 'Data de devolução é necessário'];
+    }
 }

@@ -3,9 +3,11 @@
 @section('title', 'Listagem dos Livros')
 
 @section('content')
+
+<a href="{{ route('index') }}" class="bg-black rounded-full text-white px-8 py-2 text-xl">Menu Inicial</a>
 <h1 class="text-2xl font-semibold leading-tigh py-2">
     Listagem dos Usuarios
-    <a href="{{ route('users.create') }}" class="bg-blue-900 rounded-full text-white px-4 text-sm">+</a>
+    <a href="{{ route('users.create') }}" class="bg-blue-900 rounded-full text-white px-6 py-2 text-sm">+</a>
 </h1>
 
 <form action="{{ route('users.index') }}" method="get" class="py-5">

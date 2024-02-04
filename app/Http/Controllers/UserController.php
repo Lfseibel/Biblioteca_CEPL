@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         //$search = $request->search;
         //$users = $this->model->where('name', 'LIKE', "%{$request->search}%")->get();
-        $users = $this->model->where('name', 'LIKE', "%{$request->search}%")->paginate(10);
+        $users = $this->model->where('name', 'LIKE', "%{$request->search}%")->orderBy('name', 'asc')->paginate(10);
         return view('users.index', compact('users'));
     }
 

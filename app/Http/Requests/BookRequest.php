@@ -27,10 +27,8 @@ class BookRequest extends FormRequest
 
         $rules =[
             'name' => 'required|string|max:255|min:3',
-            
-            'author' => ['required', 'string','max:255', 'min:3'],
+            'author_id' => ['required'],
             'year' => ['required'],
-            'image' => ['nullable', 'image', 'max: 1024',],
             'gender' => ['required']
         ];
 
@@ -40,6 +38,7 @@ class BookRequest extends FormRequest
 
     public function messages()
     {
-        return ['name.required' => 'Nome precisa ser preenchido',];
+        return ['name.required' => 'Nome precisa ser preenchido', 'name.min' => 'Nome precisa ter no minimo 3 caracteres', 'name.max' => 'Nome pode ter no maximo 255 caracteres', 
+        'author_id.required' => 'Autor é necessário', 'year.required' => 'Ano é necessário', 'gender.required' => 'Gênero é necessário'];
     }
 }

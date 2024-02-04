@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="{{ url('images/favicon.ico') }}" type="image/png">
     <link href="{{asset('style.css')}}">
     <script src="https://cdn.tailwindcss.com"></script>
+    @yield('script')
 </head>
 <body class="bg-gray-50">
 

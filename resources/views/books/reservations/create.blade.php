@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" href="{{asset('chosen.css')}}" />
 @section('content')
+<a href="{{ route('books.index')}}"> Voltar </a>
 <h1 class="text-2xl font-semibold leading-tigh py-2">Novo empréstimo para o livro {{$book->name}}</h1>
 
 @include('includes.validation-form')

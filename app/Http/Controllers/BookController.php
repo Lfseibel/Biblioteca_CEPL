@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
 use App\Http\Requests\ReservationRequest;
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\Reservation;
 use App\Models\User;
@@ -23,7 +24,15 @@ class BookController extends Controller
     {
         //$search = $request->search;
         //$users = $this->model->where('name', 'LIKE', "%{$request->search}%")->get();
-        $books = $this->model->where('name', 'LIKE', "%{$request->name}%")->where('author', 'LIKE', "%{$request->author}%")->paginate(20);
+        if($request->author && $author = Author::where('name', 'LIKE', "%{$request->author}%")->latest()->first())
+        {
+            $books = $this->model->where('name', 'LIKE', "%{$request->name}%")->where('author_id', 'LIKE', "%{$author->id}%")->orderBy('name', 'asc')->paginate(20); 
+        }
+        else
+        {
+            $books = $this->model->where('name', 'LIKE', "%{$request->name}%")->orderBy('name', 'asc')->paginate(20);
+            
+        }
         return view('books.index', compact('books'));
     }
 
@@ -33,33 +42,40 @@ class BookController extends Controller
         {
             return redirect()->route('books.index');
         }
-        
         return view('books.show', compact('book'));
     }
 
     public function create()
     {
-        return view('books.create');
+        $authors = Author::get();
+
+        return view('books.create', compact('authors'));
     } 
 
     public function store(BookRequest $request)
     {
         $data = $request->all();
-
-        if($request->image)
-        {
-            $data['image'] = $request->image->store('users');
-        }
+        $test = Author::where('id', 'LIKE', "%{$data['author_id']}%")->get()->last();
         
-        if(!$test = $this->model->where('gender', 'LIKE', "%{$data['gender']}%")->get()->last())
+        if(!$test->books()->count())
         {
-            $data['number'] = 1;
+            $data['number'] = '001';
         }
         else
         {
-            $data['number'] = $test->number+1;
+            $data['number'] = $test->books()->count();
+
+            // Remove leading zeros and convert to integer
+            $intValue = (int) ltrim($data['number'], '0');
+
+            // Increment the value
+            $newValue = $intValue + 1;
+
+            // Format the new value with leading zeros
+            $formattedValue = sprintf('%03d', $newValue);
+
+            $data['number'] = $formattedValue;
         }
-        
         $this->model->create($data);
 
         return redirect()->route('books.index');
@@ -71,7 +87,8 @@ class BookController extends Controller
         {
             return redirect()->route('books.index');
         }
-        return view('books.edit', compact('book'));
+        $authors = Author::get();
+        return view('books.edit', compact('book','authors'));
     }
 
     
@@ -82,7 +99,7 @@ class BookController extends Controller
         {
             return redirect()->route('books.index');
         }
-        $data = $request->only('name', 'year', 'gender', 'author');
+        $data = $request->only('name', 'year', 'gender', 'author_id');
 
         if($request->image)
         {
@@ -155,7 +172,7 @@ class BookController extends Controller
         //$search = $request->search;
         //$users = $this->model->where('name', 'LIKE', "%{$request->search}%")->get();
         $r = new Reservation;
-        $reservations = $r->where('user_name', 'LIKE', "%{$request->user_name}%")->where('reserved', '1')->paginate(20);
+        $reservations = $r->where('user_name', 'LIKE', "%{$request->user_name}%")->where('reserved', '1')->orderBy('user_name', 'asc')->paginate(20);
         
         return view('books.reservations.index', compact('reservations'));
     }
